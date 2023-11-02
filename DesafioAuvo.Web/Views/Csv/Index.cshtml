@@ -1,0 +1,55 @@
+﻿@{
+    ViewData["Title"] = "Processamento de Csv";
+}
+<div>
+    <p>Lista de departamentos válidos para leitura:</p>
+    <ul>
+        <li>RH</li>
+        <li>Compras</li>
+        <li>TI</li>
+        <li>Departamento de Operações Especiais</li>
+    </ul>
+    <p>Digite o caminho do Csv:</p><input id="path" placeholder="Ex: C:\Csv\" />
+    <a class="btn btn-success" id="processarCsv">Processar Csvs</a>
+    <br />
+    <hr/>
+    <strong id="status">Esperando....</strong>
+    <br />
+    <textarea class ="form-control" id="resultadoJson" placeholder="O resultado JSON vai aparecer aqui"></textarea>
+</div>
+
+
+
+@section Scripts {
+    <script>       
+
+        $('#processarCsv').on('click', function () {
+            $('#status').text('Processando...');
+            var path = $('#path').val();
+            if (path.length == 0 || path == null) 
+            {
+                alert('Por favor, preencha o caminho do csv');
+                $('#status').text('Esperando...');
+                return;
+            }
+
+            $.ajax({
+                method: 'POST',
+                async: true,
+                url: 'Csv/ProcessCsvAsync?path=' + path,
+                success: function (data) {
+                    if (data.erro == null) {
+                        console.log(data);
+                        $('#status').text('Concluido!');
+                        $('#resultadoJson').val(JSON.stringify(data));
+                    } else 
+                    {
+                        $('#status').text('Erro =/');
+                        $('#resultadoJson').val(data.erro);
+                    }                    
+                }
+            });
+        });
+      
+    </script>
+}
