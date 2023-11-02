@@ -32,24 +32,25 @@ namespace DesafioAuvo.Domain.Entities
         public decimal? TotalExtras { get; set; } = 0.00m;
         public List<Funcionario>? Funcionarios { get; set; }
 
-        public static List<Resultado> CalculateResult(List<CsvData> dadosCsv)
+        public static List<Resultado> CalcularResultado(List<CsvData> dadosCsv)
         {
-            var departaments = dadosCsv.GroupBy(x => new { x.Departamento, x.MesVigencia }).Select(grp => grp.ToList()).ToList();
-            var finalResult = new List<Resultado>();
-            foreach (var departament in departaments)
+            var departamentos = dadosCsv.GroupBy(x => new { x.Departamento, x.MesVigencia }).Select(grp => grp.ToList()).ToList();
+            var resultadoFinal = new List<Resultado>();
+            foreach (var departamento in departamentos)
             {
-                var result = BuildResultDepartament(departament);
-                finalResult.Add(result);
+                var result = MontarResultadoDepartamento(departamento);
+                resultadoFinal.Add(result);
             }
 
 
-            return finalResult;
+            return resultadoFinal;
         }
 
-        private static Resultado BuildResultDepartament(List<CsvData> departamentoRecebido)
+        private static Resultado MontarResultadoDepartamento(List<CsvData> departamentoRecebido)
         {
             var departamentInfo = departamentoRecebido.FirstOrDefault();
             var departamento = new Resultado(departamentInfo.Departamento, departamentInfo.MesVigencia, departamentInfo.AnoVigencia, departamentInfo.MesVigenciaInt);
+
             departamento.Funcionarios = Funcionario.CalcularValores(departamentoRecebido);
 
             departamento.TotalPagar = departamento.Funcionarios.Sum(x => x.TotalReceber);

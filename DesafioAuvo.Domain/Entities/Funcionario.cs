@@ -35,8 +35,8 @@ namespace DesafioAuvo.Domain.Entities
             var calculoFuncionarios = new List<Funcionario>();
             foreach (var funcionario in funcionarios)
             {
-                var func = CalcularUnicoFuncionario(funcionario);
-                calculoFuncionarios.Add(func);
+                var funcionarioCalculado = CalcularUnicoFuncionario(funcionario);
+                calculoFuncionarios.Add(funcionarioCalculado);
             }
 
             return calculoFuncionarios;

@@ -21,15 +21,15 @@ namespace DesafioAuvo.Application.Services.Implementations
         private List<CsvData> _results = new List<CsvData>();
         public async Task<List<Resultado>> ProcesseCsvAsync(string path)
         {
-            List<string> avaliableCsvs = ObterArquivosCsvs(path);
-            var validCsvs = ObterCsvsValidos(avaliableCsvs);
+            List<string> csvsDisponiveis = ObterArquivosCsvs(path);
+            var csvsValidos = ObterCsvsValidos(csvsDisponiveis);
             var resultado = new List<Resultado>();
 
-            if (validCsvs.Count > 0)
+            if (csvsValidos.Count > 0)
             {
                 try
                 {
-                    resultado = await ProcessarData(validCsvs, path);
+                    resultado = await ProcessarData(csvsValidos, path);
                 }
                 catch (Exception)
                 {
@@ -78,23 +78,23 @@ namespace DesafioAuvo.Application.Services.Implementations
             return csvsValidos;
         }
 
-        private async Task<List<Resultado>> ProcessarData(List<InformacoesAdicionaisCsv> validCsvs, string path)
+        private async Task<List<Resultado>> ProcessarData(List<InformacoesAdicionaisCsv> csvsValidos, string path)
         {
             var tasks = new List<Task>();
-            foreach (var csv in validCsvs)
+            foreach (var csv in csvsValidos)
             {
                 tasks.Add(Task.Run(() =>
                 {
-                    var employees = GetCsvData(csv, path);
+                    var funcionarios = ObterDadosCsv(csv, path);
                     lock (_results)
-                        _results.AddRange(employees);
+                        _results.AddRange(funcionarios);
                 }
                 ));
             }
 
             await Task.WhenAll(tasks);
 
-            var resultado = Resultado.CalculateResult(_results).
+            var resultado = Resultado.CalcularResultado(_results).
                                       OrderBy(x => x.Departamento).
                                       ThenBy(x => x.AnoVigencia).
                                       ThenBy(x => x.MesVigenciaInt).ToList();
@@ -102,7 +102,7 @@ namespace DesafioAuvo.Application.Services.Implementations
             return resultado;
         }
 
-        private List<CsvData> GetCsvData(InformacoesAdicionaisCsv csvInfo, string path)
+        private List<CsvData> ObterDadosCsv(InformacoesAdicionaisCsv csvInfo, string path)
         {
             if (!path.EndsWith(@"\"))
                 path += @"\";
@@ -111,22 +111,22 @@ namespace DesafioAuvo.Application.Services.Implementations
             using (var csv = new CsvReader(reader, _csvConfiguration))
             {
                 csv.Context.RegisterClassMap<CsvDataMap>();
-                var employees = csv.GetRecords<CsvData>().ToList();
-                FillAdditionalData(employees, csvInfo);
-                return employees;
+                var funcionarios = csv.GetRecords<CsvData>().ToList();
+                PreencherDadosAdicionais(funcionarios, csvInfo);
+                return funcionarios;
             }
         }
 
-        private static List<CsvData> FillAdditionalData(List<CsvData> employees, InformacoesAdicionaisCsv info)
+        private static List<CsvData> PreencherDadosAdicionais(List<CsvData> funcionarios, InformacoesAdicionaisCsv info)
         {
-            foreach (var employee in employees)
+            foreach (var funcionario in funcionarios)
             {
-                employee.Departamento = info.Departamento;
-                employee.AnoVigencia = info.AnoVigencia;
-                employee.MesVigencia = info.MesVigencia;
-                employee.MesVigenciaInt = info.MesVigenciaInt;
+                funcionario.Departamento = info.Departamento;
+                funcionario.AnoVigencia = info.AnoVigencia;
+                funcionario.MesVigencia = info.MesVigencia;
+                funcionario.MesVigenciaInt = info.MesVigenciaInt;
             }
-            return employees;
+            return funcionarios;
         }
     }
 }
