@@ -40,6 +40,10 @@ Demais informações sobre o Back-end:
 ## Demonstração
 https://github.com/garodriguesfs10/desafio-auvo/assets/44370579/6fce805e-7f7e-47d3-8f9e-85043c47cb86
 
+Resposta JSON:
+![image](https://github.com/garodriguesfs10/desafio-auvo/assets/44370579/5b5e77d3-deb9-4985-a59a-a1db05d24b3b)
+
+
 ## Rodando localmente
 
 Clone o projeto
