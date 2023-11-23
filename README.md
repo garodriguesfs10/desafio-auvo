@@ -1,10 +1,7 @@
 
-# Teste técnico - Auvo Tecnologia
+# Teste técnico 
 
-Este projeto faz parte do teste técnico da empresa Auvo Tecnologia para desenvolvedor .NET e conta com Back-end e Front-end.
-
-
-
+Este projeto faz parte do teste técnico da empresa X para desenvolvedor .NET e conta com Back-end e Front-end.
 
 ## Funcionalidades
 
