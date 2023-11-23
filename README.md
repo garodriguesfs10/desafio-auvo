@@ -38,7 +38,7 @@ Demais informações sobre o Back-end:
 - Paralelismo para processar e ler os CSVs
   
 ## Demonstração
-https://github.com/garodriguesfs10/desafio-auvo/assets/44370579/6fce805e-7f7e-47d3-8f9e-85043c47cb86
+https://github.com/garodriguesfs10/desafio-auvo/assets/44370579/213eac97-051c-4fc4-aa07-3dcff149ed21
 
 Resposta JSON:
 ![image](https://github.com/garodriguesfs10/desafio-auvo/assets/44370579/5b5e77d3-deb9-4985-a59a-a1db05d24b3b)
